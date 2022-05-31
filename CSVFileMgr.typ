@@ -83,6 +83,7 @@ TYPE
 		LogFileName : STRING[CSV_STRLEN_FILENAME];
 		DisableLogging : BOOL;
 		LoggerName : STRING[LOG_STRLEN_LOGGERNAME];
+		doubleSigFigs : USINT;
 	END_STRUCT;
 	CSVFileMgr_IN_PAR_typ : 	STRUCT 
 		FileDevice : STRING[CSV_STRLEN_FILEDEVICE];
