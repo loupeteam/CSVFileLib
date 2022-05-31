@@ -176,5 +176,6 @@ FUNCTION csvDTOA : UDINT (*Convert double to string*)
 	VAR_INPUT
 		value : LREAL;
 		pString : UDINT;
+		numSigFigs : USINT;
 	END_VAR
 END_FUNCTION

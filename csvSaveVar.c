@@ -248,7 +248,7 @@ unsigned short csvSaveVar(unsigned long LineNumber, struct CSVFileVariable_typ* 
 
 			ValueLReal=	*(LREAL*)(pReadAddress);
 	
-			csvDTOA( ValueLReal, (UDINT)pVariable->Value );
+			csvDTOA( ValueLReal, (UDINT)pVariable->Value, t->IN.CFG.doubleSigFigs );
 	
 			break;	
 		/********************************************************************************/
