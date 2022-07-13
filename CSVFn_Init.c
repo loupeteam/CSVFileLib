@@ -76,8 +76,8 @@ if( !t->IN.CFG.DisableLogging )
 	if( strcmp(t->IN.CFG.LoggerName, "") == 0 )	strcpy( t->IN.CFG.LoggerName, CSV_DEFAULT_LOGGERNAME);
 }
 	
-if( t->IN.CFG.doubleSigFigs == 0 ) {
-	t->IN.CFG.doubleSigFigs = CSV_DEFAULT_SIGFIGS;
+if( t->IN.CFG.DoubleSigFigs == 0 ) {
+	t->IN.CFG.DoubleSigFigs = CSV_DEFAULT_SIGFIGS;
 }
 	
 
