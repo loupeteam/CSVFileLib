@@ -1,3 +1,5 @@
+1.2.1 - Fix internal variable usage
+
 1.2.0 - Add configurable number of Significant Figures for LREALs
 
 1.1.0 - Add LREAL support
