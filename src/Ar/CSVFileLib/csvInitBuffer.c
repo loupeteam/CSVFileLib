@@ -1,13 +1,11 @@
-/********************************************************************
- * COPYRIGHT -- Automation Resources Group
- ********************************************************************
- * Library: CSVFileLib
+/*
  * File: csvInitBuffer.c
- * Author: David Blackburn
- * Created: April 05, 2012
- ********************************************************************
- * Implementation of library CSVFileLib
- ********************************************************************/
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of CSVFileLib, licensed under the MIT License.
+ * 
+ */
 
 #include <bur/plctypes.h>
 #ifdef __cplusplus

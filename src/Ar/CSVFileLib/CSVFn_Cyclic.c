@@ -1,13 +1,11 @@
-/********************************************************************
- * COPYRIGHT -- Automation Resources Group
- ********************************************************************
- * Library: CSVFileLib
+/*
  * File: CSVFn_Cyclic.c
- * Author: David Blackburn
- * Created: January 04, 2012
- ********************************************************************
- * Implementation of library CSVFileLib
- ********************************************************************/
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of CSVFileLib, licensed under the MIT License.
+ * 
+ */
 
 #include <bur/plctypes.h>
 #ifdef __cplusplus
