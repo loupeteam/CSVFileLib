@@ -1,13 +1,11 @@
 (*
- * File: CSVFileLib.var
- * Copyright (c) 2023 Loupe
- * https://loupe.team
- * 
- * This file is part of CSVFileLib, licensed under the MIT License.
- * 
-  ********************************************************************
- * Constants of library CSVFileLib
- ********************************************************************)
+* File: CSVFileLib.var
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of CSVFileLib, licensed under the MIT License.
+* 
+*)
 VAR CONSTANT
 	CSV_PADDINGCHARS : STRING[6] := ' $T$R$L$P$"';
 END_VAR

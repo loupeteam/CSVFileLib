@@ -1,13 +1,11 @@
 (*
- * File: CSVFileLib_enum.typ
- * Copyright (c) 2023 Loupe
- * https://loupe.team
- * 
- * This file is part of CSVFileLib, licensed under the MIT License.
- * 
-  ********************************************************************
- * Data types of library CSVFileLib
- ********************************************************************)
+* File: CSVFileLib_enum.typ
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of CSVFileLib, licensed under the MIT License.
+* 
+*)
 
 TYPE
 	CSV_ERR_enum : 

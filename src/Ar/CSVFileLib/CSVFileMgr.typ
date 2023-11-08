@@ -1,13 +1,11 @@
 (*
- * File: CSVFileMgr.typ
- * Copyright (c) 2023 Loupe
- * https://loupe.team
- * 
- * This file is part of CSVFileLib, licensed under the MIT License.
- * 
-  ********************************************************************
- * Data types of library CSVFileLib
- ********************************************************************)
+* File: CSVFileMgr.typ
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of CSVFileLib, licensed under the MIT License.
+* 
+*)
 
 TYPE
 	CSVFileVariable_typ : 	STRUCT 
