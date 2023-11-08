@@ -4,7 +4,6 @@
   <Files>
     <File>CSVFileLib.html</File>
     <File>CSVFileLib.md</File>
-    <File>VersionHistory.txt</File>
     <File Description="Exported data types">CSVFileLib.typ</File>
     <File Description="Exported constants">CSVFileLib.var</File>
     <File Description="Exported functions and function blocks">CSVFileLib.fun</File>
