@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="Library" Language="ANSIC" Reference="true">..\..\src\Ar\csvfilelib\ANSIC.lby</Object>
+    <Object Type="Library" Language="Binary">fiowrap</Object>
+    <Object Type="Library" Language="Binary">stringext</Object>
+    <Object Type="Library" Language="Binary">hmitools</Object>
+    <Object Type="Library" Language="Binary">ringbuflib</Object>
+    <Object Type="Library" Language="Binary">logthat</Object>
+  </Objects>
+</Package>
