@@ -1,3 +1,5 @@
+1.2.3 - Expand StringExt dependency
+
 1.2.2 - Increase maximum size of variable list from 50 to 100
 
 1.2.1 - Fix internal variable usage
