@@ -637,10 +637,16 @@ switch( t->OUT.STAT.State ){
 			
 			case CSV_ERR_BUSY: t->Internal.ScanCount++; break;
 			
-			/* Other errors or all good - write log then check status again later */
+			/* Other errors or all good - write log (if not disabled) then check status again later */
 					
-			default: t->OUT.STAT.State=	CSV_ST_DELETELOG; break;
-			
+			default: 
+				
+				if(t->IN.CFG.DisableLogging){
+					t->OUT.STAT.State=	CSV_ST_IDLE; break;
+				}
+				else{
+					t->OUT.STAT.State=	CSV_ST_DELETELOG; break;
+				}
 			
 		} // switch(ProcessStatus) //
 		
