@@ -1,3 +1,5 @@
+1.2.4 - Do not create log file if CFG.DisableLogging is true
+
 1.2.3 - Expand StringExt dependency
 
 1.2.2 - Increase maximum size of variable list from 50 to 100
