@@ -637,9 +637,16 @@ switch( t->OUT.STAT.State ){
 			
 			case CSV_ERR_BUSY: t->Internal.ScanCount++; break;
 			
-			/* Other errors or all good - write log then check status again later */
+			/* Other errors or all good - write log (if not disabled) then check status again later */
 					
-			default: t->OUT.STAT.State=	CSV_ST_DELETELOG; break;
+			default: 
+
+				if(t->IN.CFG.DisableLogging){
+					t->OUT.STAT.State=	CSV_ST_CURRENTOPERATION; break;
+				}
+				else{
+					t->OUT.STAT.State=	CSV_ST_DELETELOG; break;
+				}
 			
 			
 		} // switch(ProcessStatus) //
@@ -709,6 +716,26 @@ switch( t->OUT.STAT.State ){
 			
 			t->Internal.FIOWrap.IN.CMD.SaveAs=	0;
 			
+			t->OUT.STAT.State=	CSV_ST_CURRENTOPERATION;
+			
+		} // Done saving log //
+		
+		else if( t->Internal.FIOWrap.OUT.STAT.Error ){
+			
+			t->Internal.FIOWrap.IN.CMD.SaveAs=	0;
+			
+			csvSetError( t->Internal.FIOWrap.OUT.STAT.ErrorID, t );
+			
+			
+			/* If there is a FIOWrap error, copy ErrorString out */
+			
+			strncpy( t->OUT.STAT.ErrorString, t->Internal.FIOWrap.OUT.STAT.ErrorString, CSV_STRLEN_ERROR );
+			
+		} // Error saving log //
+		
+		break;
+
+	case CSV_ST_CURRENTOPERATION:
 			
 			switch( t->Internal.CurrOperation ){
 				
@@ -739,7 +766,7 @@ switch( t->OUT.STAT.State ){
 					
 					if( 	t->Internal.ExpandError
 						&&	( (t->Internal.ExpandStatus == CSV_ERR_INVALIDINPUT) || (t->Internal.ExpandStatus == CSV_ERR_BUFFERFULL) )
-						){
+					){
 						
 						csvSetError( t->Internal.ExpandStatus, t );
 					
@@ -747,8 +774,8 @@ switch( t->OUT.STAT.State ){
 					
 					
 					else if( 	(t->Internal.ProcessStatus == 0)
-							||	(t->Internal.ProcessStatus == CSV_ERR_LINEFAILURE)
-							){
+						||	(t->Internal.ProcessStatus == CSV_ERR_LINEFAILURE)
+					){
 						
 						t->OUT.STAT.State=	CSV_ST_DELETETEMP;
 						
@@ -769,24 +796,6 @@ switch( t->OUT.STAT.State ){
 				
 				
 			} // switch(CurrOperation) //
-			
-			
-		} // Done saving log //
-		
-		else if( t->Internal.FIOWrap.OUT.STAT.Error ){
-			
-			t->Internal.FIOWrap.IN.CMD.SaveAs=	0;
-			
-			csvSetError( t->Internal.FIOWrap.OUT.STAT.ErrorID, t );
-			
-			
-			/* If there is a FIOWrap error, copy ErrorString out */
-			
-			strncpy( t->OUT.STAT.ErrorString, t->Internal.FIOWrap.OUT.STAT.ErrorString, CSV_STRLEN_ERROR );
-			
-		} // Error saving log //
-		
-		break;
 
 
 	case CSV_ST_DELETETEMP:
