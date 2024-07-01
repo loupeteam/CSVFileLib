@@ -1,3 +1,5 @@
+1.2.4 - Fix disable logging not preventing log file creation.
+
 1.2.3 - Expand StringExt dependency
 
 1.2.2 - Increase maximum size of variable list from 50 to 100
