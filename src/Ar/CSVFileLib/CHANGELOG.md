@@ -1,4 +1,4 @@
-1.2.4 - Do not create log file if CFG.DisableLogging is true
+1.2.4 - Fix disable logging not preventing log file creation.
 
 1.2.3 - Expand StringExt dependency
 
