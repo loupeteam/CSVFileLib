@@ -29,6 +29,7 @@
     <File Description="Generate the file list string for a given file">csvhmiGenerateFileListString.c</File>
     <File>csvConversionFns.cpp</File>
     <File>BuildOptions.txt</File>
+    <File>CHANGELOG.md</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="astime" />
