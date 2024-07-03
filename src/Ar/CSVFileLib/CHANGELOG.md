@@ -1,4 +1,4 @@
-1.2.5 - Add missing break statement
+1.2.5 - Fix critical bug introduced in 1.2.4
 
 1.2.4 - Fix disable logging not preventing log file creation.
 
