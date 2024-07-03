@@ -1,3 +1,5 @@
+1.2.5 - Add missing break statement
+
 1.2.4 - Fix disable logging not preventing log file creation.
 
 1.2.3 - Expand StringExt dependency
