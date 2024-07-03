@@ -796,7 +796,7 @@ switch( t->OUT.STAT.State ){
 				
 				
 			} // switch(CurrOperation) //
-
+			break;
 
 	case CSV_ST_DELETETEMP:
 	
