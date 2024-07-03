@@ -1,3 +1,5 @@
+1.2.5 - Fix critical bug introduced in 1.2.4
+
 1.2.4 - Fix disable logging not preventing log file creation.
 
 1.2.3 - Expand StringExt dependency
