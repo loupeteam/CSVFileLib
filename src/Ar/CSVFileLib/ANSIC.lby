@@ -34,7 +34,7 @@
   <Dependencies>
     <Dependency ObjectName="astime" />
     <Dependency ObjectName="FileIO" />
-    <Dependency ObjectName="FIOWrap" FromVersion="0.9.0" ToVersion="0.9.9" />
+    <Dependency ObjectName="FIOWrap" FromVersion="0.9.0" />
     <Dependency ObjectName="HMITools" FromVersion="0.11.3" ToVersion="0.11.9" />
     <Dependency ObjectName="runtime" />
     <Dependency ObjectName="standard" />
