@@ -1,7 +1,7 @@
 {
   "name": "@loupeteam/fiowrap",
   "version": "1.0.0",
-  "description": "Loupe's fiowrap library for Automation Runtime",
+  "description": "File IO wrapper library for B&R Automation Studio",
   "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/fiowrap.html",
   "scripts": {},
   "keywords": [],
@@ -9,7 +9,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/loupeteam/fiowrap"
+    "url": "https://github.com/loupeteam/FIOWrap"
   },
   "lpm": {
     "type": "library"

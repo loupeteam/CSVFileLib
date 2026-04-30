@@ -5,7 +5,7 @@
     <File Description="Exported data types">FIOWrap.typ</File>
     <File Description="Exported constants">FIOWrap.var</File>
     <File Description="Exported functions and function blocks">FIOWrap.fun</File>
-  </Files>
+    </Files>
   <Dependencies>
     <Dependency ObjectName="FileIO" />
     <Dependency ObjectName="astime" />
