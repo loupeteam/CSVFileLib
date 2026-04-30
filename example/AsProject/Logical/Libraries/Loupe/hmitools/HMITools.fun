@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: HMITools
- * File: HMITools.fun
- * Author: Josh
- * Created: November 07, 2012
- ********************************************************************
- * Functions and function blocks of library HMITools
- ********************************************************************)
+(*
+* File: HMITools.fun
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of HMITools, licensed under the MIT License.
+* 
+*)
 (*
 Application Ready Functions
 
@@ -263,8 +261,8 @@ Log Viewer
 FUNCTION LogViewerGetAlarmString : UDINT
 	VAR_INPUT
 		t : LogView_GetAlarm;
-		AlarmIndex : UDINT;
-		LoggerIdent : UDINT;
+		recordId: ArEventLogRecordIDType;
+		LoggerIdent : ArEventLogIdentType;
 	END_VAR
 	VAR_IN_OUT
 		OutputString : STRING[LIST_BOX_STRING_SIZE];
@@ -273,7 +271,7 @@ END_FUNCTION
 
 FUNCTION LogViewerCreateString : BOOL (*Log Viewer helper function to create the log string*)
 	VAR_INPUT
-		ReadData : asarlogREAD;
+		ReadData : ArEventLogREAD;
 		ASCIIData : ARRAY[0..255] OF USINT;
 	END_VAR
 	VAR_IN_OUT
@@ -282,6 +280,7 @@ FUNCTION LogViewerCreateString : BOOL (*Log Viewer helper function to create the
 	VAR
 		iString : STRING[LIST_BOX_STRING_SIZE];
 		iConvString : STRING[LIST_BOX_STRING_SIZE];
+		emptyDTStructure : DTStructure;
 	END_VAR
 END_FUNCTION
 (*

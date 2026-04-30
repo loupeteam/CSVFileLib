@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: LogExport
- * File: LogExport.typ
- * Author: Josh
- * Created: August 14, 2012
- ********************************************************************
- * Data types of library LogExport
- ********************************************************************)
+(*
+* File: LogViewer.typ
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of HMITools, licensed under the MIT License.
+* 
+*)
 
 TYPE
 	LogView_HMI_typ : 	STRUCT 
@@ -58,11 +56,12 @@ TYPE
 		Done : BOOL;
 		Busy : BOOL;
 		Error : BOOL;
-		ErrorID : UINT;
+		ErrorID : DINT;
 		ErrorString : STRING[80];
 	END_STRUCT;
 	LogView_Internal_typ : 	STRUCT  (*Logger Variables*)
-		GetInfo : AsArLogGetInfo; (*AsARLog: AsArLogGetInfo FUB*)
+		GetIdent: ArEventLogGetIdent;
+		GetRecordID: ArEventLogGetLatestRecordID;
 		GetTopAlarm : LogView_GetAlarm;
 		GetBottomAlarm : LogView_GetAlarm;
 		Buffer : Buffer_typ;
@@ -70,25 +69,16 @@ TYPE
 		LoggerName : STRING[80];
 		Ident : UDINT;
 	END_STRUCT;
-	asarlogREAD : 	STRUCT  (*Header data for log entry*)
-		len : UDINT; (*Length of the entire entry*)
-		lenBin : UDINT; (*Length fo the binary log data*)
+	ArEventLogREAD: 	STRUCT  (*Header data for log entry*)
 		lenAscii : UDINT; (*Length of the ASCII log data*)
-		logLevel : UDINT; (*Log level*)
 		errornr : UDINT; (*Error number of the entry*)
-		taskName : ARRAY[0..35]OF USINT; (*Task name*)
-		errYear : UDINT; (*Year (date of error)*)
-		errMonth : UDINT; (*Month (date of error)*)
-		errDay : UDINT; (*Day (date of error)*)
-		errHour : UDINT; (*Hour (date of error)*)
-		errMinute : UDINT; (*Minute (date of error)*)
-		errSecond : UDINT; (*Second (date of error)*)
-		errMilliSec : UDINT; (*millisecond (date of error)*)
-		errMicroSec : UDINT; (*microsendond (date of error)*)
+		errTime : DTStructure;
 	END_STRUCT;
 	LogView_GetAlarm : 	STRUCT 
-		ReadItem : AsArLogRead; (*AsARLog: AsArLogRead FUB*)
-		ReadData : asarlogREAD;
+		ReadItem : ArEventLogRead; (*ArEventLog: ArEventLogRead FUB*)
+		ReadAddData: ArEventLogReadAddData; (*For reading the message text*)
+		ReadData : ArEventLogREAD;
+		convertUTC : UtcDT_TO_LocalDTStructure;
 		BinaryData : ARRAY[0..255]OF USINT;
 		ASCIIData : ARRAY[0..255]OF USINT;
 	END_STRUCT;

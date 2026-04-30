@@ -1,15 +1,18 @@
 {
   "name": "@loupeteam/ringbuflib",
-  "version": "0.2.4",
-  "description": "Loupe's ringbuflib library for Automation Runtime",
-  "homepage": "https://loupeteam.github.io/Sandbox/libraries/ringbuflib.html",
+  "version": "1.0.0",
+  "description": "Ring buffer library for B&R Automation Studio",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/ringbuflib.html",
   "scripts": {},
   "keywords": [],
   "author": "Loupe",
-  "license": "Loupe Software License Agreement",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/loupeteam/ringbuflib"
+    "url": "https://github.com/loupeteam/RingBufLib"
+  },
+  "lpm": {
+    "type": "library"
   },
   "dependencies": {}
 }

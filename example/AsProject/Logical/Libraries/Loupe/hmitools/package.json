@@ -1,19 +1,22 @@
 {
   "name": "@loupeteam/hmitools",
-  "version": "0.11.4",
-  "description": "Loupe's hmitools library for Automation Runtime",
-  "homepage": "https://loupeteam.github.io/Sandbox/libraries/hmitools.html",
+  "version": "1.0.0",
+  "description": "HMI utilities library for B&R Automation Studio",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/hmitools.html",
   "scripts": {},
   "keywords": [],
   "author": "Loupe",
-  "license": "Loupe Software License Agreement",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/loupeteam/hmitools"
+    "url": "https://github.com/loupeteam/HMITools"
+  },
+  "lpm": {
+    "type": "library"
   },
   "dependencies": {
-    "@loupeteam/ringbuflib": ">=0.2.0",
-    "@loupeteam/logthat": "*",
-    "@loupeteam/stringext": ">=0.4.0"
+    "@loupeteam/ringbuflib": ">=1.0.0",
+    "@loupeteam/logthat": ">=1.0.0",
+    "@loupeteam/stringext": ">=1.0.0"
   }
 }

@@ -1,10 +1,10 @@
-(********************************************************************
- * COPYRIGHT --  Automation Resources Group
- ********************************************************************
- * Library: FIOWrap
+(*
  * File: FIOWrap.typ
- * Author: blackburnd
- * Created: June 18, 2009
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of FIOWrap, licensed under the MIT License.
+ * 
  ********************************************************************
  * Data types of library FIOWrap
  ********************************************************************)
@@ -34,13 +34,15 @@ TYPE
 		FIOWRAP_ST_WAIT := 0, (*0*)
 		FIOWRAP_ST_OPEN, (*1*)
 		FIOWRAP_ST_CREATE, (*2*)
-		FIOWRAP_ST_READ, (*3*)
-		FIOWRAP_ST_WRITE, (*4*)
-		FIOWRAP_ST_CLOSE, (*5*)
-		FIOWRAP_ST_DELETE, (*6*)
-		FIOWRAP_ST_DELETE_FILE, (*7*)
-		FIOWRAP_ST_DELETE_DIR, (*8*)
-		FIOWRAP_ST_RENAME, (*9*)
+		FIOWRAP_ST_WRITE_HEADER, (*3*)
+		FIOWRAP_ST_READ, (*4*)
+		FIOWRAP_ST_WRITE, (*5*)
+		FIOWRAP_ST_CLOSE, (*6*)
+		FIOWRAP_ST_DELETE, (*7*)
+		FIOWRAP_ST_DELETE_FILE, (*8*)
+		FIOWRAP_ST_DELETE_DIR, (*9*)
+		FIOWRAP_ST_RENAME, (*10*)
+		FIOWRAP_ST_INFO, (*11*)
 		FIOWRAP_ST_ERROR := 999, (*999*)
 		FIOWRAP_ST_
 		);
@@ -53,6 +55,7 @@ TYPE
 		Delete : FileDelete;
 		Rename : FileRename;
 		GetTime : DTGetTime;
+		Info : FileInfo;
 	END_STRUCT;
 	FIOWrap_Internal_typ : 	STRUCT 
 		FileID : UDINT; (*File Ident for reading and writing*)
@@ -69,6 +72,8 @@ TYPE
 		CMD : FIOWrap_IN_CMD_typ;
 		DTStruct : DTStructure;
 		TempStr : STRING[FIOWRAP_STRLEN_NAME];
+		FileInfo : fiFILE_INFO;
+		headerLen : UDINT;
 	END_STRUCT;
 	FIOWrap_OUT_STAT_typ : 	STRUCT 
 		Busy : BOOL;
@@ -92,7 +97,9 @@ TYPE
 		len : UDINT; (*Length of the data to be read or written*)
 		offset : UDINT; (*Offset within the file to read/write from/to.*)
 		MaxFileSize : UDINT; (*Maximum file size (only evaluated when appending to a file)*)
-		MultiFile : BOOL;
+		MultiFile : BOOL; (*Allow multiple files to be created. When true, AppendToFile will not issue an error if the MaxFileSize would be exceeded. Instead, a new file is created with the name FileName. The original file is renamed to include the FileName and the Suffix.*)
+		pHeader : UDINT; (*Address of data to be added to the top of new files*)
+		headerLen : UDINT; (*Length or size of header in bytes*)
 	END_STRUCT;
 	FIOWrap_IN_CMD_typ : 	STRUCT 
 		Open : BOOL; (*Open a file and read its contents*)

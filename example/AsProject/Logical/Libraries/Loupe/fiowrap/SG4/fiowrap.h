@@ -1,6 +1,6 @@
 /* Automation Studio generated header file */
 /* Do not edit ! */
-/* fiowrap 0.09.1 */
+/* FIOWrap 1.0.0 */
 
 #ifndef _FIOWRAP_
 #define _FIOWRAP_
@@ -8,8 +8,8 @@
 extern "C" 
 {
 #endif
-#ifndef _fiowrap_VERSION
-#define _fiowrap_VERSION 0.09.1
+#ifndef _FIOWrap_VERSION
+#define _FIOWrap_VERSION 1.0.0
 #endif
 
 #include <bur/plctypes.h>
@@ -21,40 +21,20 @@ extern "C"
 		#include "AsBrStr.h"
 		#include "astime.h"
 		#include "FileIO.h"
-		#include "StringExt.h"
+		#include "stringext.h"
 #endif
 #ifdef _SG4
 		#include "AsBrStr.h"
 		#include "astime.h"
 		#include "FileIO.h"
-		#include "StringExt.h"
+		#include "stringext.h"
 #endif
 #ifdef _SGC
 		#include "AsBrStr.h"
 		#include "astime.h"
 		#include "FileIO.h"
-		#include "StringExt.h"
+		#include "stringext.h"
 #endif
-
-
-/* Constants */
-#ifdef _REPLACE_CONST
- #define FIOWRAP_STRLEN_ERROR 120U
- #define FIOWRAP_NUM_DELETE 10U
- #define FIOWRAP_MAI_DELETE 9U
- #define FIOWRAP_STRLEN_NAME 260U
- #define FIOWRAP_STAT_OK 0U
- #define FIOWRAP_STAT_DISABLED 65534U
-#else
- _GLOBAL_CONST unsigned char FIOWRAP_STRLEN_ERROR;
- _GLOBAL_CONST unsigned char FIOWRAP_NUM_DELETE;
- _GLOBAL_CONST unsigned char FIOWRAP_MAI_DELETE;
- _GLOBAL_CONST unsigned short FIOWRAP_STRLEN_NAME;
- _GLOBAL_CONST unsigned short FIOWRAP_STAT_OK;
- _GLOBAL_CONST unsigned short FIOWRAP_STAT_DISABLED;
-#endif
-
-
 
 
 /* Datatypes and datatypes of function blocks */
@@ -81,6 +61,7 @@ typedef enum FIOWRAP_ST_enum
 {	FIOWRAP_ST_WAIT = 0,
 	FIOWRAP_ST_OPEN,
 	FIOWRAP_ST_CREATE,
+	FIOWRAP_ST_WRITE_HEADER,
 	FIOWRAP_ST_READ,
 	FIOWRAP_ST_WRITE,
 	FIOWRAP_ST_CLOSE,
@@ -88,6 +69,7 @@ typedef enum FIOWRAP_ST_enum
 	FIOWRAP_ST_DELETE_FILE,
 	FIOWRAP_ST_DELETE_DIR,
 	FIOWRAP_ST_RENAME,
+	FIOWRAP_ST_INFO,
 	FIOWRAP_ST_ERROR = 999,
 	FIOWRAP_ST_
 } FIOWRAP_ST_enum;
@@ -101,6 +83,7 @@ typedef struct FIOWrap_Int_FUB_typ
 	struct FileDelete Delete;
 	struct FileRename Rename;
 	struct DTGetTime GetTime;
+	struct FileInfo Info;
 } FIOWrap_Int_FUB_typ;
 
 typedef struct FIOWrap_IN_CMD_typ
@@ -126,6 +109,8 @@ typedef struct FIOWrap_Internal_typ
 	struct FIOWrap_IN_CMD_typ CMD;
 	struct DTStructure DTStruct;
 	plcstring TempStr[261];
+	struct fiFILE_INFO FileInfo;
+	unsigned long headerLen;
 } FIOWrap_Internal_typ;
 
 typedef struct FIOWrap_OUT_STAT_typ
@@ -153,6 +138,8 @@ typedef struct FIOWrap_IN_PAR_typ
 	unsigned long offset;
 	unsigned long MaxFileSize;
 	plcbit MultiFile;
+	unsigned long pHeader;
+	unsigned long headerLen;
 } FIOWrap_IN_PAR_typ;
 
 typedef struct FIOWrap_IN_typ
@@ -243,6 +230,26 @@ _BUR_PUBLIC plcbit FIOWrapFn_Cyclic(struct FIOWrap_typ* t);
 _BUR_PUBLIC plcbit fiowSetError(unsigned short ErrorID, struct FIOWrap_typ* t);
 _BUR_PUBLIC plcbit fiomSetError(unsigned short ErrorID, struct FIOManage_typ* t);
 _BUR_PUBLIC unsigned short fioOpenFile_Init(struct FIOWrap_typ* t);
+
+
+/* Constants */
+#ifdef _REPLACE_CONST
+ #define FIOWRAP_STRLEN_ERROR 120U
+ #define FIOWRAP_NUM_DELETE 10U
+ #define FIOWRAP_MAI_DELETE 9U
+ #define FIOWRAP_STRLEN_NAME 260U
+ #define FIOWRAP_STAT_OK 0U
+ #define FIOWRAP_STAT_DISABLED 65534U
+#else
+ _GLOBAL_CONST unsigned char FIOWRAP_STRLEN_ERROR;
+ _GLOBAL_CONST unsigned char FIOWRAP_NUM_DELETE;
+ _GLOBAL_CONST unsigned char FIOWRAP_MAI_DELETE;
+ _GLOBAL_CONST unsigned short FIOWRAP_STRLEN_NAME;
+ _GLOBAL_CONST unsigned short FIOWRAP_STAT_OK;
+ _GLOBAL_CONST unsigned short FIOWRAP_STAT_DISABLED;
+#endif
+
+
 
 
 #ifdef __cplusplus
