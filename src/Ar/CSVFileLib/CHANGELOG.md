@@ -1,3 +1,5 @@
+2.0.0 - Migrate to Automation Studio 6
+
 1.2.5 - Fix critical bug introduced in 1.2.4
 
 1.2.4 - Fix disable logging not preventing log file creation.
