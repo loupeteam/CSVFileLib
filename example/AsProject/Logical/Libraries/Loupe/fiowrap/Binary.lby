@@ -1,17 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Library xmlns="http://br-automation.co.at/AS/Library" Version="0.09.1" SubType="Binary">
+<Library xmlns="http://br-automation.co.at/AS/Library" Version="1.0.0" SubType="Binary">
   <Files>
-    <File>FIOWrap.html</File>
-    <File>FIOWrap.md</File>
-    <File>VersionHistory.txt</File>
+    <File>CHANGELOG.md</File>
     <File Description="Exported data types">FIOWrap.typ</File>
     <File Description="Exported constants">FIOWrap.var</File>
     <File Description="Exported functions and function blocks">FIOWrap.fun</File>
-  </Files>
+    </Files>
   <Dependencies>
     <Dependency ObjectName="FileIO" />
     <Dependency ObjectName="astime" />
     <Dependency ObjectName="AsBrStr" />
-    <Dependency ObjectName="StringExt" FromVersion="0.11.0" />
+    <Dependency ObjectName="StringExt" FromVersion="1.0.0" />
   </Dependencies>
 </Library>
