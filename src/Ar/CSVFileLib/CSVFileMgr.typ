@@ -82,6 +82,7 @@ TYPE
 		DisableLogging : BOOL;
 		LoggerName : STRING[LOG_STRLEN_LOGGERNAME];
 		DoubleSigFigs : USINT;
+		BitStringFormat : USINT; (*How BYTE/WORD/DWORD values are written, see CSV_BITFORMAT_enum. Reading accepts hex and decimal regardless of this setting*)
 	END_STRUCT;
 	CSVFileMgr_IN_PAR_typ : 	STRUCT 
 		FileDevice : STRING[CSV_STRLEN_FILEDEVICE];

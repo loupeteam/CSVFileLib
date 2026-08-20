@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <?AutomationStudio FileVersion="4.9"?>
-<Library Version="2.0.1" SubType="ANSIC" xmlns="http://br-automation.co.at/AS/Library">
+<Library Version="2.1.0" SubType="ANSIC" xmlns="http://br-automation.co.at/AS/Library">
   <Files>
     <File Description="Exported data types">CSVFileLib.typ</File>
     <File Description="Exported constants">CSVFileLib.var</File>
@@ -38,7 +38,7 @@
     <Dependency ObjectName="HMITools" FromVersion="1.0.0" />
     <Dependency ObjectName="runtime" />
     <Dependency ObjectName="standard" />
-    <Dependency ObjectName="StringExt" FromVersion="1.0.0" />
+    <Dependency ObjectName="StringExt" FromVersion="1.1.0" />
     <Dependency ObjectName="sys_lib" />
     <Dependency ObjectName="LogThat" FromVersion="1.0.0" />
     <Dependency ObjectName="AsBrStr" />

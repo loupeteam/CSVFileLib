@@ -74,6 +74,100 @@ extern "C"
 	/* Invalid type				DONE and TESTED DFB 20120314 */
 
 
+
+/********************************************************************/
+/* Parse a BYTE/WORD/DWORD value from the file						*/
+/********************************************************************/
+
+/* Reading is deliberately permissive, so that a file written with either
+	BitStringFormat setting reads back, as do hand written files.
+	
+	A prefixed literal (0xFF, 16#FF, $FF) is hexadecimal, bare digits are
+	decimal. Requiring the prefix for hex is what keeps this unambiguous -
+	otherwise "10" could reasonably mean either ten or sixteen. */
+
+
+static unsigned short csvParseBitString(const char* pValue, unsigned long* pResult)
+{
+
+	const char*	p;
+
+	UDINT	Value, Digit;
+
+
+	if( 	(pValue == 0)
+		||	(pResult == 0)
+		){
+		
+		return CSV_ERR_INVALIDINPUT;
+		
+	}
+
+
+	p=	pValue;
+
+	p+=	strspn( p, " \t\r\n\v\f" );
+
+
+	/* Hexadecimal, if there is a prefix */
+
+	if( 	( (p[0] == '0') && ((p[1] == 'x') || (p[1] == 'X')) )
+		||	( (p[0] == '1') && (p[1] == '6') && (p[2] == '#') )
+		||	(  p[0] == '$' )
+		){
+
+		if( HexStringToUDINT( (UDINT)p, (UDINT)pResult ) != 0 ) return CSV_ERR_INVALIDVALUE;
+
+		return 0;
+
+	}
+
+
+	/* Decimal. Accumulated by hand rather than with atoui(), which
+		saturates on overflow instead of reporting it. */
+
+	if( 	(*p < '0')
+		||	(*p > '9')
+		){
+		
+		return CSV_ERR_INVALIDVALUE;
+		
+	}
+
+	Value=	0;
+
+	while( 	(*p >= '0')
+		&&	(*p <= '9')
+		){
+
+		Digit=	*p - '0';
+
+		/* Checked before multiplying so that an overflow is caught rather than wrapping */
+
+		if( Value > ((CSV_MAX_UDINT - Digit) / 10) ) return CSV_ERR_INVALIDVALUE;
+
+		Value=	Value * 10 + Digit;
+
+		p++;
+
+	}
+
+
+	/* Anything after the digits other than white space is an error */
+
+	p+=	strspn( p, " \t\r\n\v\f" );
+
+	if( *p != '\0' ) return CSV_ERR_INVALIDVALUE;
+
+
+	*pResult=	Value;
+
+	return 0;
+
+
+} // End Fn //
+
+
 unsigned short csvOpenVar(unsigned long LineNumber, struct CSVFileVariable_typ* pVariable, struct CSVFileMgr_typ* t)
 {
 
@@ -137,6 +231,8 @@ unsigned short csvOpenVar(unsigned long LineNumber, struct CSVFileVariable_typ* 
 	/************************************************/
 
 	UDINT	i, ValueStringLength, ValueUdint;
+	UDINT	MaxValue;
+	UINT	ParseStatus;
 	DINT	ValueDint;
 	REAL	ValueReal;
 	LREAL	ValueLReal;
@@ -392,6 +488,39 @@ unsigned short csvOpenVar(unsigned long LineNumber, struct CSVFileVariable_typ* 
 		
 	
 		/********************************************************************************/
+		/* Bit string types																*/
+		/********************************************************************************/
+	
+		case CSV_TYPE_BYTE:
+		case CSV_TYPE_WORD:
+		case CSV_TYPE_DWORD:
+		
+			ParseStatus=	csvParseBitString( pVariable->Value, &ValueUdint );
+		
+			if( pVariable->DataType == CSV_TYPE_BYTE )		MaxValue=	CSV_MAX_BYTE;
+			else if( pVariable->DataType == CSV_TYPE_WORD )	MaxValue=	CSV_MAX_WORD;
+			else											MaxValue=	CSV_MAX_DWORD;
+		
+			if( 	(ParseStatus != 0)
+				||	(ValueUdint > MaxValue)
+				){
+			
+				csvAddLogInfo( (UINT)CSV_INFO_INVALIDVALUE, LineNumber, (UDINT)pVariable->Name, t);
+				return CSV_ERR_INVALIDVALUE;
+		
+			}
+			else{
+			
+				if( pVariable->DataType == CSV_TYPE_BYTE )		*(USINT*)(pWriteAddress)=	(USINT)ValueUdint;
+				else if( pVariable->DataType == CSV_TYPE_WORD )	*(UINT*)(pWriteAddress)=	(UINT)ValueUdint;
+				else											*(UDINT*)(pWriteAddress)=	(UDINT)ValueUdint;
+				
+			}
+			
+			break;
+	
+	
+		/********************************************************************************/
 		/* Unsupported and Invalid types												*/
 		/********************************************************************************/
 	
@@ -400,9 +529,6 @@ unsigned short csvOpenVar(unsigned long LineNumber, struct CSVFileVariable_typ* 
 		case CSV_TYPE_DATE:
 		case CSV_TYPE_ARRAY_OF_STRUCT:
 		case CSV_TYPE_TIME_OF_DAY:
-		case CSV_TYPE_BYTE:
-		case CSV_TYPE_WORD:
-		case CSV_TYPE_DWORD:
 		case CSV_TYPE_LWORD:
 		case CSV_TYPE_WSTRING:
 		case CSV_TYPE_LINT:

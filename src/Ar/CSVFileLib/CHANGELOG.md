@@ -1,3 +1,8 @@
+2.1.0 - Add support for BYTE, WORD and DWORD variables
+	Written as hex by default; IN.CFG.BitStringFormat selects 0x, 16# or decimal
+	Reading accepts hex (0x, 16#, $) and decimal regardless of the setting
+	Requires StringExt 1.1.0
+
 2.0.1 - Fix page fault when the file being read is larger than IN.CFG.MaxFileSize
 	Read buffers now allocate one extra byte so a completely full buffer is still a
 	valid string, and CSV_ST_OPEN reports CSV_ERR_BUFFERFULL instead of parsing a
