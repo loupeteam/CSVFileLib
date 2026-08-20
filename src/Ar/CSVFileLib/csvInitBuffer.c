@@ -56,7 +56,10 @@ if( 	(BufferLength == 0)
 
 memset( pBuffer, 0, sizeof(CSVFileMgr_Int_Buffer_typ) );
 
-if( TMP_alloc( BufferLength, (void **)&(pBuffer->pData) ) != 0 ) return CSV_ERR_MEMALLOC;
+/* Allocate one extra byte so that a completely full buffer is still a valid C string.
+   MaxLength stays at BufferLength, so all overflow checks remain unchanged. */
+
+if( TMP_alloc( BufferLength + 1, (void **)&(pBuffer->pData) ) != 0 ) return CSV_ERR_MEMALLOC;
 	
 pBuffer->MaxLength=	BufferLength;
 

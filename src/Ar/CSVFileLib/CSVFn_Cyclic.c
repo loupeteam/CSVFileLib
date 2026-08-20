@@ -588,6 +588,27 @@ switch( t->OUT.STAT.State ){
 			
 			t->Internal.FIOWrap.IN.CMD.Open=	0;
 			
+			
+			/* The file did not fit in the read buffer. FIOWrap passes IN.PAR.len straight
+				to FileRead, so the buffer is filled completely and the data is truncated
+				mid-file. Do not parse it. */
+			
+			if( t->Internal.FIOWrap.OUT.STAT.FileLen > t->Internal.ReadBuffer.MaxLength ){
+				
+				csvSetError( (UINT)CSV_ERR_BUFFERFULL, t );
+				
+				break;
+				
+			}
+			
+			
+			/* Record how much was actually read and terminate the buffer for parsing */
+			
+			t->Internal.ReadBuffer.CurrentLength=	t->Internal.FIOWrap.OUT.STAT.FileLen;
+			
+			*(char*)(t->Internal.ReadBuffer.pData + t->Internal.ReadBuffer.CurrentLength)=	'\0';
+			
+			
 			t->Internal.LineNumber=				0;
 			
 			t->Internal.SuccessfulLineCount=	0;

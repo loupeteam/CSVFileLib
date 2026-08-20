@@ -1,3 +1,8 @@
+2.0.1 - Fix page fault when the file being read is larger than IN.CFG.MaxFileSize
+	Read buffers now allocate one extra byte so a completely full buffer is still a
+	valid string, and CSV_ST_OPEN reports CSV_ERR_BUFFERFULL instead of parsing a
+	truncated file
+
 2.0.0 - Migrate to Automation Studio 6
 
 1.2.5 - Fix critical bug introduced in 1.2.4
