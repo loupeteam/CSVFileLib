@@ -48,6 +48,23 @@ FUNCTION HexStringToDINT : DINT (*Converts a Hex String to a DINT*) (*$GROUP=Use
 	END_VAR
 END_FUNCTION
 
+FUNCTION HexStringToUDINT : DINT (*Parses a hex string with an optional 0x, 16# or $ prefix. Returns 0 on success or a STREXT_ERR_enum value; the parsed value is written through pValue*) (*$GROUP=User,$CAT=User,$GROUPICON=User.png,$CATICON=User.png*)
+	VAR_INPUT
+		pHexStr : UDINT; (*Pointer to the string to parse*)
+		pValue : UDINT; (*Pointer to the UDINT that receives the value*)
+	END_VAR
+END_FUNCTION
+
+FUNCTION UDINTToHexString : DINT (*Formats a UDINT as a hex string. Returns the string length or a STREXT_ERR_enum value*) (*$GROUP=User,$CAT=User,$GROUPICON=User.png,$CATICON=User.png*)
+	VAR_INPUT
+		Value : UDINT; (*Value to format*)
+		pString : UDINT; (*Pointer to the destination buffer*)
+		Size : UDINT; (*Size of the destination buffer, including the terminator*)
+		NumDigits : USINT; (*Zero pad to this many digits, 1..8. 0 for the shortest representation*)
+		Prefix : USINT; (*Notation to use, see STREXT_HEXPREFIX_enum*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION GenerateTimestampMS_1 : UINT (*Generate a time stamp string from a DTStructure variable*)
 	VAR_INPUT
 		pDTStructure : UDINT;
