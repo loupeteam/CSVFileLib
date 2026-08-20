@@ -52,7 +52,7 @@ if( pBuffer == 0 ){
 
 pBuffer->CurrentLength=	0;
 
-memset( (void*)pBuffer->pData, 0, pBuffer->MaxLength );
+memset( (void*)pBuffer->pData, 0, pBuffer->MaxLength + 1 );
 
 return 0;
 
