@@ -13,9 +13,11 @@
 /*                                                                     */
 /* Runs once a few scans after boot; set runTest to run it again.      */
 /*                                                                     */
-/* The suite PASSED only when suiteOk is 1. That checks testDone as    */
-/* well as the counts, because a file operation that never completes   */
-/* would otherwise leave testFail at 0 and read as a pass.             */
+/* The suite PASSED only when suiteOk is 1. It is cleared at the start  */
+/* of every run and set only at the end, after the full assertion       */
+/* count has been checked - so a run that fails part way and skips the  */
+/* end, or one that never completes, leaves it 0. Checking testFail     */
+/* alone is not enough: that stays 0 when a phase never ran.            */
 /* ------------------------------------------------------------------ */
 
 /* Every assertion the suite makes, counted at the call sites:
@@ -375,6 +377,13 @@ void _CYCLIC ProgramCyclic(void)
 				testFail=		0;
 				testDone=		0;
 				roundTripOk=	0;
+
+				/* Cleared here, not recomputed on the way out: the error
+					paths in states 1 and 2 jump straight to state 3 and
+					never reach the state 9 that sets it, so a previous
+					passing run would otherwise leave it TRUE */
+
+				suiteOk=		0;
 				strcpy((char*)firstFail, "");
 
 				checkPvTypes();
