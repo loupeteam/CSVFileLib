@@ -1,4 +1,6 @@
 2.1.0 - Add support for BYTE, WORD and DWORD variables
+	BEHAVIOUR CHANGE: opening a file now writes BYTE/WORD/DWORD variables that
+	were previously left untouched and reported as an unsupported type
 	Written as hex by default; IN.CFG.BitStringFormat selects 0x, 16# or decimal
 	Reading accepts hex (0x, 16#, $) and decimal regardless of the setting
 	Requires StringExt 1.1.0

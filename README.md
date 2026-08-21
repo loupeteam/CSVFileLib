@@ -27,6 +27,29 @@ For more documentation and examples, see https://loupeteam.github.io/LoupeDocs/l
 # Installation
 To install using the Loupe Package Manager (LPM), in an initialized Automation Studio project directory run `lpm install csvfilelib`. For more information about LPM, see https://loupeteam.github.io/LoupeDocs/tools/lpm.html
 
+# Tests
+
+The example project carries a self checking test suite for the bit string
+(BYTE/WORD/DWORD) support, in `example/AsProject/Logical/Programs/Default`.
+It runs automatically a few scans after boot, and can be re-run by setting
+`runTest`.
+
+The `ARsim` configuration exists so the suite can actually be executed:
+
+```
+lpm install
+# build and deploy the ARsim configuration, then read the results
+```
+
+Results are written to `result.csv` on the USER file device. `testFail` must
+be 0, and `pvTypeOk` and `roundTripOk` must both be TRUE. `firstFail` names
+the first case that failed, if any.
+
+`example/UserPartition/ARsim/` holds two hand written input files that the
+suite reads (`crafted.csv`, `badline.csv`); they are copied to the USER file
+device by the `.loupe/partition.json` mapping.
+
+
 ## Licensing
 
 This project is licensed under the [MIT License](LICENSE).

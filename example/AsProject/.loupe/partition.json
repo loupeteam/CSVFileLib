@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "mappings": [
+    { "configuration": "ARsim", "fileDevice": "USER", "localFolder": "../UserPartition/ARsim" }
+  ]
+}

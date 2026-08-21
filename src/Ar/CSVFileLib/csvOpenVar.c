@@ -495,6 +495,11 @@ unsigned short csvOpenVar(unsigned long LineNumber, struct CSVFileVariable_typ* 
 		case CSV_TYPE_WORD:
 		case CSV_TYPE_DWORD:
 		
+			/* Initialised because csvParseBitString() leaves it alone on failure,
+				and the range check below must not read an indeterminate value */
+
+			ValueUdint=		0;
+
 			ParseStatus=	csvParseBitString( pVariable->Value, &ValueUdint );
 		
 			if( pVariable->DataType == CSV_TYPE_BYTE )		MaxValue=	CSV_MAX_BYTE;

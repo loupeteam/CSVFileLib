@@ -1,6 +1,34 @@
 
 VAR
+	CsvMgr : CSVFileMgr_typ;
+	runTest : BOOL; (*Rising edge runs the bit string test suite*)
+	testState : DINT;
+	testPass : UDINT;
+	testFail : UDINT;
+	firstFail : STRING[120];
+	testDone : BOOL;
+	pvTypeByte : UDINT; (*DataType PV_ninfo reports for a BYTE*)
+	pvTypeWord : UDINT; (*DataType PV_ninfo reports for a WORD*)
+	pvTypeDword : UDINT; (*DataType PV_ninfo reports for a DWORD*)
+	pvTypeOk : BOOL; (*Set when the reported types match CSV_TYPE_BYTE/WORD/DWORD*)
+	bootDelay : UDINT;
+	c1Byte : UDINT;
+	c1Word : UDINT;
+	c1Dword : UDINT;
+	c1Usint : UDINT;
+	c1Status : UINT;
+	c2Byte : UDINT;
+	c2Word : UDINT;
+	c2Dword : UDINT;
+	c2ErrorID : UINT;
+	roundTripOk : BOOL; (*Set when the file round trip returned the original values*)
+END_VAR
 
+VAR
+	tByte : BYTE; (*Round trip targets, written by the file*)
+	tWord : WORD;
+	tDword : DWORD;
+	tUsint : USINT; (*Control: an already supported type*)
 END_VAR
 
 VAR CONSTANT
