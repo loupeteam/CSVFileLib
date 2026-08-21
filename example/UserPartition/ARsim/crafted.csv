@@ -1,0 +1,5 @@
+// hand written, awkward but valid
+Default:tByte, 0x7F , description with, commas
+Default:tWord,16#00FF
+Default:tDword,	4294967295
+Default:tUsint, 99

@@ -132,6 +132,7 @@ unsigned short csvSaveVar(unsigned long LineNumber, struct CSVFileVariable_typ* 
 
 	DINT	ValueDint;
 	UDINT	ValueUdint;
+	USINT	NumDigits, HexPrefix;
 	REAL	ValueReal;
 	LREAL	ValueLReal;
 
@@ -263,6 +264,60 @@ unsigned short csvSaveVar(unsigned long LineNumber, struct CSVFileVariable_typ* 
 		
 	
 		/********************************************************************************/
+		/* Bit string types																*/
+		/********************************************************************************/
+	
+		case CSV_TYPE_BYTE:
+		case CSV_TYPE_WORD:
+		case CSV_TYPE_DWORD:
+		
+		
+			/* Pad to the width of the source type, so that a column of values lines up
+				and the width of the underlying variable is visible in the file */
+		
+			if( pVariable->DataType == CSV_TYPE_BYTE ){
+			
+				ValueUdint=	*(USINT*)(pReadAddress);
+				NumDigits=	2;
+				
+			}
+			else if( pVariable->DataType == CSV_TYPE_WORD ){
+			
+				ValueUdint=	*(UINT*)(pReadAddress);
+				NumDigits=	4;
+				
+			}
+			else{
+			
+				ValueUdint=	*(UDINT*)(pReadAddress);
+				NumDigits=	8;
+				
+			}
+		
+		
+			if( t->IN.CFG.BitStringFormat == CSV_BITFORMAT_DECIMAL ){
+			
+				uitoa( ValueUdint, (UDINT)pVariable->Value );
+			
+			}
+			else{
+			
+				if( t->IN.CFG.BitStringFormat == CSV_BITFORMAT_HEX_IEC )	HexPrefix=	STREXT_HEXPREFIX_IEC;
+				else														HexPrefix=	STREXT_HEXPREFIX_0X;
+			
+				if( UDINTToHexString( ValueUdint, (UDINT)pVariable->Value, sizeof(pVariable->Value), NumDigits, HexPrefix ) < 0 ){
+				
+					csvAddLogInfo( (UINT)CSV_INFO_INVALIDVALUE, LineNumber, (UDINT)pVariable->Name, t);
+					return CSV_ERR_INVALIDVALUE;
+					
+				}
+			
+			}
+			
+			break;
+	
+	
+		/********************************************************************************/
 		/* Unsupported and Invalid types												*/
 		/********************************************************************************/
 	
@@ -271,9 +326,6 @@ unsigned short csvSaveVar(unsigned long LineNumber, struct CSVFileVariable_typ* 
 		case CSV_TYPE_DATE:
 		case CSV_TYPE_ARRAY_OF_STRUCT:
 		case CSV_TYPE_TIME_OF_DAY:
-		case CSV_TYPE_BYTE:
-		case CSV_TYPE_WORD:
-		case CSV_TYPE_DWORD:
 		case CSV_TYPE_LWORD:
 		case CSV_TYPE_WSTRING:
 		case CSV_TYPE_LINT:

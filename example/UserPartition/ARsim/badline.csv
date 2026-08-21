@@ -1,0 +1,4 @@
+// one bad line among good ones
+Default:tByte,0x1FF
+Default:tWord,0x1234
+Default:tDword,$ABCDEF

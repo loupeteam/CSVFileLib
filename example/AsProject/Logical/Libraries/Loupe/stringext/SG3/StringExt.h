@@ -1,6 +1,6 @@
 /* Automation Studio generated header file */
 /* Do not edit ! */
-/* stringext 1.0.0 */
+/* stringext 1.1.0 */
 
 #ifndef _STRINGEXT_
 #define _STRINGEXT_
@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 #ifndef _stringext_VERSION
-#define _stringext_VERSION 1.0.0
+#define _stringext_VERSION 1.1.0
 #endif
 
 #include <bur/plctypes.h>
@@ -36,8 +36,18 @@ extern "C"
 
 /* Datatypes and datatypes of function blocks */
 typedef enum STREXT_ERR_enum
-{	STREXT_ERR_INVALID_INPUT = -1
+{	STREXT_ERR_BUFFER_TOO_SMALL = -4,
+	STREXT_ERR_RANGE = -3,
+	STREXT_ERR_INVALID_FORMAT = -2,
+	STREXT_ERR_INVALID_INPUT = -1
 } STREXT_ERR_enum;
+
+typedef enum STREXT_HEXPREFIX_enum
+{	STREXT_HEXPREFIX_NONE = 0,
+	STREXT_HEXPREFIX_0X,
+	STREXT_HEXPREFIX_IEC,
+	STREXT_HEXPREFIX_DOLLAR
+} STREXT_HEXPREFIX_enum;
 
 typedef struct StrExtArgs_typ
 {	float r[5];
@@ -55,6 +65,8 @@ _BUR_PUBLIC unsigned long atoui(unsigned long pString);
 _BUR_PUBLIC unsigned long uitoa(unsigned long Value, unsigned long pString);
 _BUR_PUBLIC unsigned long ByteToHexString(unsigned long pByte, unsigned long NumBytes, unsigned long pString);
 _BUR_PUBLIC signed long HexStringToDINT(unsigned long pHexStr);
+_BUR_PUBLIC signed long HexStringToUDINT(unsigned long pHexStr, unsigned long pValue);
+_BUR_PUBLIC signed long UDINTToHexString(unsigned long Value, unsigned long pString, unsigned long Size, unsigned char NumDigits, unsigned char Prefix);
 _BUR_PUBLIC unsigned short GenerateTimestampMS_1(unsigned long pDTStructure, unsigned long pTimestamp, unsigned long TimestampLength);
 _BUR_PUBLIC unsigned short GenerateTimestampMS(unsigned long pDTStructure, unsigned long pTimestamp, unsigned long TimestampLength);
 _BUR_PUBLIC unsigned short GenerateTimestamp(plcdt DT1, unsigned long pTimestamp, unsigned long TimestampLength);

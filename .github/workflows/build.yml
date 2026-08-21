@@ -48,6 +48,14 @@ jobs:
           config:     ARM
           build-mode: ${{ inputs.build_mode || 'Build' }}
 
+      - name: Build ARsim
+        uses: loupeteam/br-actions/build-as-project@v1
+        with:
+          exe-path:   ${{ steps.find-as.outputs.exe-path }}
+          project:    ${{ env.PROJECT }}
+          config:     ARsim
+          build-mode: ${{ inputs.build_mode || 'Build' }}
+
       - name: Upload build diagnostics
         if: always()
         uses: actions/upload-artifact@v4
