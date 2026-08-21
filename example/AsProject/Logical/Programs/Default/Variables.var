@@ -7,6 +7,7 @@ VAR
 	testFail : UDINT;
 	firstFail : STRING[120];
 	testDone : BOOL;
+	suiteOk : BOOL; (*The one flag that means PASSED: no failures, full count, and the suite actually finished*)
 	pvTypeByte : UDINT; (*DataType PV_ninfo reports for a BYTE*)
 	pvTypeWord : UDINT; (*DataType PV_ninfo reports for a WORD*)
 	pvTypeDword : UDINT; (*DataType PV_ninfo reports for a DWORD*)

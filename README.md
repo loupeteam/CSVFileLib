@@ -34,21 +34,38 @@ The example project carries a self checking test suite for the bit string
 It runs automatically a few scans after boot, and can be re-run by setting
 `runTest`.
 
-The `ARsim` configuration exists so the suite can actually be executed:
+The `ARsim` configuration exists so the suite can actually be executed; the
+`Intel` and `ARM` configurations target hardware. CI compiles all three, but
+does not run the suite - executing it is a manual step.
 
-```
-lpm install
-# build and deploy the ARsim configuration, then read the results
-```
+## Running it
 
-Results are written to `result.csv` on the USER file device. `testFail` must
-be 0, and `pvTypeOk` and `roundTripOk` must both be TRUE. `firstFail` names
-the first case that failed, if any.
+The suite reads two hand written input files, `crafted.csv` and `badline.csv`,
+from the USER file device. They live in `example/UserPartition/ARsim/` and
+have to be present on the device before the suite runs, otherwise the file
+phases cannot complete.
 
-`example/UserPartition/ARsim/` holds two hand written input files that the
-suite reads (`crafted.csv`, `badline.csv`); they are copied to the USER file
-device by the `.loupe/partition.json` mapping.
+Either copy them onto the USER file device by hand, or let a tool that reads
+`example/AsProject/.loupe/partition.json` place them for you. That file is the
+Loupe VS Code PLC Toolkit / bnr-build partition mapping - it is not something
+LPM or the Automation Studio build does on its own.
 
+## Reading the result
+
+The suite writes `result.csv` to the USER file device.
+
+**`suiteOk` is the verdict.** It is TRUE only when there were no failures, the
+full expected number of assertions actually ran, and the suite reached the
+end. Checking `testFail` alone is not enough: a file operation that never
+completes leaves `testFail` at 0, which would otherwise read as a pass.
+
+`firstFail` names the first case that failed, if any. The remaining values in
+the file are there to make a failure diagnosable - the data types PV_ninfo
+reported, and the values read back from each input file.
+
+Note that the PV_ninfo data type codes were measured on ARsim running
+Automation Runtime 6.7.6. The configurations in this project pin 6.6.2, which
+is what CI compiles against.
 
 ## Licensing
 

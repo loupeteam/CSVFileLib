@@ -11,9 +11,18 @@
 /* ------------------------------------------------------------------ */
 /* Bit string (BYTE/WORD/DWORD) test suite for CSVFileLib              */
 /*                                                                     */
-/* Set runTest to run it. testFail must come back 0, and pvTypeOk and  */
-/* roundTripOk must both come back 1.                                  */
+/* Runs once a few scans after boot; set runTest to run it again.      */
+/*                                                                     */
+/* The suite PASSED only when suiteOk is 1. That checks testDone as    */
+/* well as the counts, because a file operation that never completes   */
+/* would otherwise leave testFail at 0 and read as a pass.             */
 /* ------------------------------------------------------------------ */
+
+/* Every assertion the suite makes, counted at the call sites:
+	1 PV_ninfo + 41 read + 12 write + 36 round trip + 1 file round trip
+	+ 1 crafted.csv + 1 badline.csv */
+
+#define CSVTEST_EXPECTED_ASSERTIONS 93
 
 
 typedef struct readCase_typ {
@@ -124,8 +133,15 @@ static const writeCase_typ writeCases[] = {
 static void recordFail(char* what)
 {
 	testFail++;
+
 	if(strlen((char*)firstFail) == 0){
-		strncpy((char*)firstFail, what, sizeof(firstFail)-1);
+
+		/* An empty input is itself a case, so it needs a label of its own
+			rather than leaving firstFail looking unset */
+
+		if(strlen(what) == 0)	strcpy((char*)firstFail, "(empty value)");
+		else					strncpy((char*)firstFail, what, sizeof(firstFail)-1);
+
 	}
 }
 
@@ -182,7 +198,10 @@ static void runReadCases(void)
 
 		if(Status == 0){
 
-			/* Compare only the bytes the type actually writes */
+			/* Compare only the bytes the type actually writes. This reads the
+				low bytes, which assumes a little endian target - true for
+				ARsim/x86 and for the X20 ARM target this project builds. */
+
 			Got=	Storage;
 			if(readCases[i].DataType == CSV_TYPE_BYTE)		Got=	Storage & 0xFF;
 			else if(readCases[i].DataType == CSV_TYPE_WORD)	Got=	Storage & 0xFFFF;
@@ -372,6 +391,12 @@ void _CYCLIC ProgramCyclic(void)
 				tDword=	0xDEADBEEF;
 				tUsint=	42;
 
+				/* Cleared in full: CSVFn_Cyclic walks every entry regardless of
+					the empty terminator, so a shorter list would leave rows
+					behind from the previous run */
+
+				memset( CsvMgr.IN.PAR.VariableList, 0, sizeof(CsvMgr.IN.PAR.VariableList) );
+
 				strcpy(CsvMgr.IN.PAR.FileName, "bitstring.csv");
 				strcpy(CsvMgr.IN.PAR.VariableList[0], "Default:tByte");
 				strcpy(CsvMgr.IN.PAR.VariableList[1], "Default:tWord");
@@ -443,20 +468,9 @@ void _CYCLIC ProgramCyclic(void)
 		case 3:
 
 			CsvMgr.IN.CMD.AcknowledgeError=	0;
+
 			testDone=	1;
 			testState=	0;
-			break;
-
-
-		case 4:
-
-			if(CsvMgr.OUT.STAT.Done || CsvMgr.OUT.STAT.Error){
-				CsvMgr.IN.CMD.SaveVariableListToFile=	0;
-				CsvMgr.IN.CMD.AcknowledgeError=			CsvMgr.OUT.STAT.Error;
-				testDone=	1;
-				testState=	3;
-			}
-
 			break;
 
 
@@ -485,7 +499,7 @@ void _CYCLIC ProgramCyclic(void)
 				c1Usint=	tUsint;
 				c1Status=	CsvMgr.OUT.STAT.ErrorID;
 
-				if( (c1Byte == 0x7F) && (c1Word == 0x00FF)
+				if( (c1Status == 0) && (c1Byte == 0x7F) && (c1Word == 0x00FF)
 					&& (c1Dword == 0xFFFFFFFF) && (c1Usint == 99) ){
 					testPass++;
 				}
@@ -550,24 +564,37 @@ void _CYCLIC ProgramCyclic(void)
 
 			CsvMgr.IN.CMD.AcknowledgeError=	0;
 
+			/* Computed before the results are written, so the file carries
+				this run's verdict. The count is checked as well as the
+				failure tally, so a phase that never ran cannot pass by
+				silence. */
+
+			suiteOk=	(testFail == 0)
+					&&	(testPass == CSVTEST_EXPECTED_ASSERTIONS)
+					&&	(pvTypeOk != 0)
+					&&	(roundTripOk != 0);
+
+			memset( CsvMgr.IN.PAR.VariableList, 0, sizeof(CsvMgr.IN.PAR.VariableList) );
+
 			strcpy(CsvMgr.IN.PAR.FileName, "result.csv");
-			strcpy(CsvMgr.IN.PAR.VariableList[0], "Default:testPass");
-			strcpy(CsvMgr.IN.PAR.VariableList[1], "Default:testFail");
-			strcpy(CsvMgr.IN.PAR.VariableList[2], "Default:firstFail");
-			strcpy(CsvMgr.IN.PAR.VariableList[3], "Default:pvTypeByte");
-			strcpy(CsvMgr.IN.PAR.VariableList[4], "Default:pvTypeWord");
-			strcpy(CsvMgr.IN.PAR.VariableList[5], "Default:pvTypeDword");
-			strcpy(CsvMgr.IN.PAR.VariableList[6], "Default:pvTypeOk");
-			strcpy(CsvMgr.IN.PAR.VariableList[7], "Default:roundTripOk");
-			strcpy(CsvMgr.IN.PAR.VariableList[8], "Default:c1Byte");
-			strcpy(CsvMgr.IN.PAR.VariableList[9], "Default:c1Word");
-			strcpy(CsvMgr.IN.PAR.VariableList[10], "Default:c1Dword");
-			strcpy(CsvMgr.IN.PAR.VariableList[11], "Default:c1Usint");
-			strcpy(CsvMgr.IN.PAR.VariableList[12], "Default:c2Byte");
-			strcpy(CsvMgr.IN.PAR.VariableList[13], "Default:c2Word");
-			strcpy(CsvMgr.IN.PAR.VariableList[14], "Default:c2Dword");
-			strcpy(CsvMgr.IN.PAR.VariableList[15], "Default:c2ErrorID");
-			strcpy(CsvMgr.IN.PAR.VariableList[16], "");
+			strcpy(CsvMgr.IN.PAR.VariableList[0], "Default:suiteOk");
+			strcpy(CsvMgr.IN.PAR.VariableList[1], "Default:testPass");
+			strcpy(CsvMgr.IN.PAR.VariableList[2], "Default:testFail");
+			strcpy(CsvMgr.IN.PAR.VariableList[3], "Default:firstFail");
+			strcpy(CsvMgr.IN.PAR.VariableList[4], "Default:pvTypeByte");
+			strcpy(CsvMgr.IN.PAR.VariableList[5], "Default:pvTypeWord");
+			strcpy(CsvMgr.IN.PAR.VariableList[6], "Default:pvTypeDword");
+			strcpy(CsvMgr.IN.PAR.VariableList[7], "Default:pvTypeOk");
+			strcpy(CsvMgr.IN.PAR.VariableList[8], "Default:roundTripOk");
+			strcpy(CsvMgr.IN.PAR.VariableList[9], "Default:c1Byte");
+			strcpy(CsvMgr.IN.PAR.VariableList[10], "Default:c1Word");
+			strcpy(CsvMgr.IN.PAR.VariableList[11], "Default:c1Dword");
+			strcpy(CsvMgr.IN.PAR.VariableList[12], "Default:c1Usint");
+			strcpy(CsvMgr.IN.PAR.VariableList[13], "Default:c2Byte");
+			strcpy(CsvMgr.IN.PAR.VariableList[14], "Default:c2Word");
+			strcpy(CsvMgr.IN.PAR.VariableList[15], "Default:c2Dword");
+			strcpy(CsvMgr.IN.PAR.VariableList[16], "Default:c2ErrorID");
+			strcpy(CsvMgr.IN.PAR.VariableList[17], "");
 
 			CsvMgr.IN.CMD.SaveVariableListToFile=	1;
 			testState=	10;
